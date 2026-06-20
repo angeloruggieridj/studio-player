@@ -200,7 +200,7 @@ jobs:
             -Dlibobs_DIR="/tmp/obs-dev/Frameworks/libobs.framework/Resources/cmake" \
             -Dobs-frontend-api_DIR="/tmp/obs-dev/lib/cmake/obs-frontend-api" \
             -DQt6_DIR="/tmp/obs-deps-qt6/lib/cmake/Qt6" \
-            -DCMAKE_PREFIX_PATH="/tmp/obs-dev;/tmp/obs-deps-qt6"
+            -DCMAKE_PREFIX_PATH="/tmp/obs-dev;/tmp/obs-deps-qt6;/tmp/obs-deps"
 
       - name: Build plugin
         run: cmake --build build

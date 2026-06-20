@@ -56,7 +56,11 @@ jobs:
         shell: powershell
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "aqtinstall==3.1.*"
+          # py7zr 1.x regressed archive extraction and makes aqt fail with
+          # "Bad7zFile: Specified path is bad: .../qt_lib_uitools.pri" while
+          # unpacking Qt. Pin py7zr<1.0 (resolves to 0.22.0), the known-good
+          # extractor for aqtinstall 3.1.x.
+          python -m pip install "aqtinstall==3.1.*" "py7zr<1.0"
           python -m aqt install-qt windows desktop 6.7.3 win64_msvc2019_64 -O C:\Qt
           "Qt6_DIR=C:\Qt\6.7.3\msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           "C:\Qt\6.7.3\msvc2019_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append

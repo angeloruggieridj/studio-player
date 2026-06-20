@@ -110,14 +110,14 @@ jobs:
         run: cmake --build C:\obs-build --target obs-frontend-api --config Release --parallel
 
       - name: Install OBS dev
-        run: cmake --install C:\obs-build --config Release --component obs_libraries --prefix C:\obs-dev
+        run: cmake --install C:\obs-build --config Release --component Development --prefix C:\obs-dev
 
       - name: Configure plugin
         shell: cmd
         run: |
           cmake -B build -S . -A x64 ^
             -DCMAKE_BUILD_TYPE=Release ^
-            -DCMAKE_PREFIX_PATH="C:\obs-dev;%Qt6_DIR%"
+            -DCMAKE_PREFIX_PATH="C:\obs-dev;%Qt6_DIR%;C:\obs-deps"
 
       - name: Build plugin
         run: cmake --build build --config Release

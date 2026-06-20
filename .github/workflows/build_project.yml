@@ -164,6 +164,16 @@ jobs:
           git clone --depth=1 --branch ${{ env.OBS_VERSION }} \
             https://github.com/obsproject/obs-studio.git /tmp/obs
 
+          # OBS's Metal renderer (libobs-metal) is a Swift-only target, but the
+          # top-level project() never enables the Swift language, so CMake's
+          # generate step fails with "can not determine linker language for
+          # target: libobs-metal". We only need libobs + obs-frontend-api dev
+          # files to build the plugin; libobs-metal is a runtime graphics module
+          # that nothing here links against (it depends on libobs, not the other
+          # way around). Drop it from the OBS build so configure succeeds.
+          sed -i.bak 's/^\( *\)add_subdirectory(libobs-metal)/\1# add_subdirectory(libobs-metal) # disabled: Swift target not needed for dev build/' /tmp/obs/CMakeLists.txt
+          grep -n 'libobs-metal' /tmp/obs/CMakeLists.txt
+
       - name: Configure OBS
         run: |
           cmake -B /tmp/obs-build -S /tmp/obs \
